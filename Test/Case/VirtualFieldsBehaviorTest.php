@@ -19,7 +19,10 @@ class VirualFieldsBehaviorTest extends CakeTestCase {
 	protected function _reset($settings = array(), $model = null) {
 
 		$model = $model === null ? 'VirtualFieldsBehaviorMockModel' : $model;
-		$this->Model = ClassRegistry::init('Collectionable.' . $model, 'TestSuite/Mock');
+		if (!class_exists($model)) {
+			App::import('TestSuite/Mock', 'Collectionable.' . $model); // forced import
+		}
+		$this->Model = ClassRegistry::init('Collectionable.' . $model);
 		$this->Model->Behaviors->attach('Collectionable.VirtualFields', $settings);
 		$this->Behavior = $this->Model->Behaviors->VirtualFields;
 
